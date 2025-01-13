@@ -50,6 +50,13 @@
 
 #include "safeguards.h"
 
+//includes I have added
+#include "command_func.h"
+#include "vehicle_base.h"
+#include "openttd.h"
+#include "console_type.h"
+#include "string_func.h"
+
 /* scriptfile handling */
 static uint _script_current_depth; ///< Depth of scripts running (used to abort execution when #ConReturn is encountered).
 
@@ -1887,6 +1894,28 @@ DEF_CONSOLE_CMD(ConCompanies)
 	return true;
 }
 
+DEF_CONSOLE_CMD(PrintVehicles)
+{
+
+	std::string colour = GetString(STR_COLOUR_DARK_BLUE);
+	int n = 0; 
+	while (Vehicle::GetIfValid(n) != nullptr) {
+		if (n == 0) {
+			n++;
+			continue;
+		}
+		if (Vehicle::GetIfValid(n)->type == VEH_TRAIN) {
+			IConsolePrint(CC_INFO, "Vehicle {}",
+				Vehicle::GetIfValid(n)->x_pos);
+		}
+		n++;
+	}
+
+	
+
+	return true;
+}
+
 DEF_CONSOLE_CMD(ConSay)
 {
 	if (argc == 0) {
@@ -2833,6 +2862,7 @@ void IConsoleStdLibRegister()
 
 	IConsole::CmdRegister("companies",               ConCompanies);
 	IConsole::AliasRegister("players",               "companies");
+	IConsole::CmdRegister("vehicles",			PrintVehicles);
 
 	/* networking functions */
 
