@@ -1,0 +1,2 @@
+Vehicle 7; X:2152 Y:2234
+Vehicle 8; X:2152 Y:2234

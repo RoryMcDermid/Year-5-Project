@@ -57,6 +57,12 @@
 #include "console_type.h"
 #include "string_func.h"
 
+//to write to file
+#include <iostream>
+#include <fstream>
+#include <filesystem> 
+#include <string>
+
 /* scriptfile handling */
 static uint _script_current_depth; ///< Depth of scripts running (used to abort execution when #ConReturn is encountered).
 
@@ -1896,20 +1902,70 @@ DEF_CONSOLE_CMD(ConCompanies)
 
 DEF_CONSOLE_CMD(PrintVehicles)
 {
-
 	std::string colour = GetString(STR_COLOUR_DARK_BLUE);
+
+	std::string filename = "output.txt";
+
+	//..\OpenTTD\out\build\x64-Debug is where the code is initially outputting to (with just current path)
+
+
+
+	std::string currentFolder = std::filesystem::current_path().parent_path().parent_path().parent_path().string();
+
+	
+	//..\OpenTTD/output is where this prints to
+	std::string outputFolder = currentFolder + "/" + "output";
+
+	// Ensure the output folder exists
+	if (!std::filesystem::exists(outputFolder)) {
+		if (!std::filesystem::create_directory(outputFolder)) {
+			IConsolePrint(CC_INFO, "Error, unable to create/find output folder");
+			return false;
+		}
+	}
+		
+	
+	std::string filepath = outputFolder + "/" + filename;
+
+
+	std::ofstream outFile(filepath);
+	if (!outFile) {
+		IConsolePrint(CC_INFO, "Error, unable to create/alter output file");
+		return false;
+	}
+	else {
+		IConsolePrint(CC_INFO, "File created/accessed");
+	}
+	
+
 	int n = 0; 
 	while (Vehicle::GetIfValid(n) != nullptr) {
 		if (n == 0) {
 			n++;
 			continue;
 		}
+
 		if (Vehicle::GetIfValid(n)->type == VEH_TRAIN) {
-			IConsolePrint(CC_INFO, "Vehicle {}",
-				Vehicle::GetIfValid(n)->x_pos);
+
+
+
+
+			outFile << "Vehicle " << (n + 1) << "; X:" << Vehicle::GetIfValid(n)->x_pos
+				<< " Y:" << Vehicle::GetIfValid(n)->y_pos << std::endl;
+			//leaving this here to allow easy confirmation that testing is working
+			IConsolePrint(CC_INFO, "Vehicle {}; X:{} Y:{}",
+				n+1,
+				Vehicle::GetIfValid(n)->x_pos,
+				Vehicle::GetIfValid(n)->y_pos);
 		}
+
 		n++;
 	}
+	outFile.close();
+
+
+
+
 
 	
 
