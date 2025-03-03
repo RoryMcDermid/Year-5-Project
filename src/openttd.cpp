@@ -93,6 +93,8 @@
 #include <fstream>
 #include <filesystem> 
 #include <string>
+#include <script_date.hpp>
+
 
 void CallLandscapeTick();
 void DoPaletteAnimations();
@@ -1374,7 +1376,8 @@ void OutputLocation()
 	if (!outFile) {
 		IConsolePrint(CC_INFO, "Error, unable to create/alter output file");
 	} else {
-		IConsolePrint(CC_INFO, "File created/accessed");
+		//removing this so that the command line is usable during normal operation
+		//IConsolePrint(CC_INFO, "File created/accessed");
 	
 
 
@@ -1386,6 +1389,7 @@ void OutputLocation()
 		}
 		if ((Vehicle::GetIfValid(n)->type == VEH_TRAIN) && (Vehicle::GetIfValid(n)->IsFrontEngine())) {
 
+			//maybe have some check to see who the owner of a vehicle is?
 
 			outFile << "Vehicle " << (n + 1) << "; X:" << Vehicle::GetIfValid(n)->x_pos
 				<< " Y:" << Vehicle::GetIfValid(n)->y_pos << std::endl;
@@ -1400,6 +1404,119 @@ void OutputLocation()
 	}
 	outFile.close();
 	}
+}
+
+
+void OutputTime()
+{
+	std::string colour = GetString(STR_COLOUR_DARK_BLUE);
+
+	std::string filename = "outputTime.txt";
+
+	//..\OpenTTD\out\build\x64-Debug is where the code is initially outputting to (with just current path)
+
+
+
+	std::string currentFolder = std::filesystem::current_path().parent_path().parent_path().parent_path().string();
+
+
+	//..\OpenTTD/output is where this prints to
+	std::string outputFolder = currentFolder + "/" + "output";
+
+	// Ensure the output folder exists
+	if (!std::filesystem::exists(outputFolder)) {
+		if (!std::filesystem::create_directory(outputFolder)) {
+			IConsolePrint(CC_INFO, "Error, unable to create/find output folder");
+		}
+	}
+
+
+	std::string filepath = outputFolder + "/" + filename;
+
+
+	std::ofstream outFile(filepath);
+	if (!outFile) {
+		IConsolePrint(CC_INFO, "Error, unable to create/alter output file");
+	} else {
+		//removing this so that the command line is usable during normal operation
+		//IConsolePrint(CC_INFO, "File created/accessed");
+
+		TimerGameCalendar::YearMonthDay ymd = TimerGameCalendar::ConvertDateToYMD(TimerGameCalendar::date);
+
+		std::string formatted_date = fmt::format("{:04}-{:02}-{:02}", ymd.year, ymd.month + 1, ymd.day);
+
+
+		outFile << formatted_date << std::endl;
+
+		int n = 0;
+		while (Company::GetIfValid(n) != nullptr) {
+
+			TimerGameCalendar::Year inaug = Company::GetIfValid(n)->inaugurated_year_calendar;
+
+
+			outFile << n << ":" << inaug.value << std::endl;
+
+			n++;
+		}
+
+
+	}
+	outFile.close();
+
+}
+
+
+void OutputMoney()
+{
+	std::string colour = GetString(STR_COLOUR_DARK_BLUE);
+
+	std::string filename = "outputMoney.txt";
+
+	//..\OpenTTD\out\build\x64-Debug is where the code is initially outputting to (with just current path)
+
+
+
+	std::string currentFolder = std::filesystem::current_path().parent_path().parent_path().parent_path().string();
+
+
+	//..\OpenTTD/output is where this prints to
+	std::string outputFolder = currentFolder + "/" + "output";
+
+	// Ensure the output folder exists
+	if (!std::filesystem::exists(outputFolder)) {
+		if (!std::filesystem::create_directory(outputFolder)) {
+			IConsolePrint(CC_INFO, "Error, unable to create/find output folder");
+		}
+	}
+
+
+	std::string filepath = outputFolder + "/" + filename;
+
+
+	std::ofstream outFile(filepath);
+	if (!outFile) {
+		IConsolePrint(CC_INFO, "Error, unable to create/alter output file");
+	} else {
+		//removing this so that the command line is usable during normal operation
+		//IConsolePrint(CC_INFO, "File created/accessed");
+
+		
+
+		int n = 0;
+		while (Company::GetIfValid(n) != nullptr) {
+
+			int money = Company::GetIfValid(n)->money;
+
+
+			outFile << n << ":" << money << std::endl;
+
+			n++;
+		}
+
+
+	}
+	outFile.close();
+
 }
 
 void GameLoop()
@@ -1464,7 +1581,12 @@ void GameLoop()
 	SocialIntegration::RunCallbacks();
 
 	//printing output
+	//prints vehicle locations
 	OutputLocation();
+	//prints both current time and the year each company was created
+	OutputTime();
+	//prints the current cash of each company
+	OutputMoney();
 }
 
 
