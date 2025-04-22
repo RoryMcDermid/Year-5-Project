@@ -28,6 +28,8 @@ enum SignalType : uint8_t {
 	SIGTYPE_PBS        = 4, ///< normal pbs signal
 	SIGTYPE_PBS_ONEWAY = 5, ///< no-entry signal
 
+	SIGTYPE_CUSTOM	   = 6, ///< New custom one added by me
+
 	SIGTYPE_END,
 	SIGTYPE_LAST       = SIGTYPE_PBS_ONEWAY,
 	SIGTYPE_LAST_NOPBS = SIGTYPE_COMBO,

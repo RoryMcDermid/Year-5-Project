@@ -1519,6 +1519,67 @@ void OutputMoney()
 
 }
 
+void OutputTilePositions()
+{
+
+	std::string colour = GetString(STR_COLOUR_DARK_BLUE);
+
+	std::string filename = "outputTilePositions.txt";
+
+	//..\OpenTTD\out\build\x64-Debug is where the code is initially outputting to (with just current path)
+
+
+
+	std::string currentFolder = std::filesystem::current_path().parent_path().parent_path().parent_path().string();
+
+	//..\OpenTTD/output is where this prints to
+	std::string outputFolder = currentFolder + "/" + "output";
+
+	// Ensure the output folder exists
+	if (!std::filesystem::exists(outputFolder)) {
+		if (!std::filesystem::create_directory(outputFolder)) {
+			IConsolePrint(CC_INFO, "Error, unable to create/find output folder");
+		}
+	}
+
+
+	std::string filepath = outputFolder + "/" + filename;
+
+	std::ofstream outFile(filepath);
+	if (!outFile) {
+		IConsolePrint(CC_INFO, "Error, unable to create/alter output file");
+	} else {
+		//removing this so that the command line is usable during normal operation
+		//IConsolePrint(CC_INFO, "File created/accessed");
+
+
+
+		outFile << "test "  << std::endl;
+
+		//need some way to distribute the iterations so it won't freeze up
+		if (Map::IsInitialized) {
+			for (int i = 0; i < Map::MaxX(); i++) {
+				/*for (int y = 0; y < Map::MaxY(); i++) {
+					outFile << i << ":" << y << " ";
+				}*/
+
+				//GetSignal();
+
+				//RunTileLoop();
+				outFile << "test" << std::endl;
+			}
+		}
+
+		
+
+		
+
+
+	}
+	outFile.close();
+
+}
+
 void GameLoop()
 {
 	if (_game_mode == GM_BOOTSTRAP) {
@@ -1587,6 +1648,8 @@ void GameLoop()
 	OutputTime();
 	//prints the current cash of each company
 	OutputMoney();
+	//Going to print the locations of "sensors"
+	OutputTilePositions();
 }
 
 

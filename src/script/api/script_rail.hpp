@@ -73,6 +73,8 @@ public:
 		SIGNALTYPE_PBS           = ::SIGTYPE_PBS,        ///< Normal PBS signal.
 		SIGNALTYPE_PBS_ONEWAY    = ::SIGTYPE_PBS_ONEWAY, ///< No-entry PBS signal.
 
+		SIGNALTYPE_CUSTOM		 = ::SIGTYPE_CUSTOM,
+
 		SIGNALTYPE_TWOWAY        = 8, ///< Bit mask for twoway signal.
 		SIGNALTYPE_NORMAL_TWOWAY = SIGNALTYPE_NORMAL | SIGNALTYPE_TWOWAY, ///< Normal twoway signal.
 		SIGNALTYPE_ENTRY_TWOWAY  = SIGNALTYPE_ENTRY  | SIGNALTYPE_TWOWAY, ///< Entry twoway signal.

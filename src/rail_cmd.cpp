@@ -1252,7 +1252,7 @@ static bool AdvanceSignalAutoFill(TileIndex &tile, Trackdir &trackdir, bool remo
  * @param remove remove signals?
  * @param autofill fill beyond selected stretch?
  * @param minimise_gaps false = keep fixed distance, true = minimise gaps between signals
- * @param signal_density user defined signals_density
+ * @param density user defined signals_density
  * @return the cost of this operation or an error
  */
 static CommandCost CmdSignalTrackHelper(DoCommandFlag flags, TileIndex tile, TileIndex end_tile, Track track, SignalType sigtype, SignalVariant sigvar, bool mode, bool remove, bool autofill, bool minimise_gaps, int signal_density)
