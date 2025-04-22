@@ -17,6 +17,7 @@
     - 2.4) [Translating](#24-translating)
 - 3.0) [Licensing](#30-licensing)
 - 4.0) [Credits](#40-credits)
+- 5.0) [Year 5 Project Information](#50-project-info)
 
 ## 1.0) About
 
@@ -218,3 +219,7 @@ See `cmake/3rdparty/llvm/LICENSE.txt` for the complete license text.
 ## 4.0 Credits
 
 See [CREDITS.md](./CREDITS.md)
+
+## 5.0 Year 5 Project Information
+
+This altered version of OpenTTD adds a script that puts the x and y positions of every train on the map into a file called "output.txt" inside of the folder named "output" inside of the root "OpenTTD" directory
